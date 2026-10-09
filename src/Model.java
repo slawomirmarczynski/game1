@@ -4,7 +4,7 @@ public class Model {
     private final char[][] board = new char[BOARD_SIZE][BOARD_SIZE];
     private char currentPlayer = 'X';
     private char winner = ' ';
-    private int movesPlayed;
+    private int movesPlayed = 0;
 
     public Model() {
         for (int row = 0; row < BOARD_SIZE; row++) {
@@ -27,7 +27,7 @@ public class Model {
     }
 
     public boolean isDraw() {
-        return winner == ' ' && movesPlayed == BOARD_SIZE * BOARD_SIZE;
+        return winner == ' ' && (movesPlayed == BOARD_SIZE * BOARD_SIZE);
     }
 
     public boolean isGameOver() {

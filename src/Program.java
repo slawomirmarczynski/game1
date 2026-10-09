@@ -7,7 +7,7 @@ public class Program implements Runnable {
 
     public Program() {
         model = new Model();
-        view = new View(System.out);
+        view = new ConsoleView(System.out);
         controller = new Controller(model, view, new Scanner(System.in));
     }
 
@@ -29,6 +29,7 @@ public class Program implements Runnable {
     }
 
     public static void main(String[] args) {
-        new Program().run();
+        Runnable program = new Program();
+        program.run();
     }
 }
