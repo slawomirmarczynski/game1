@@ -3,12 +3,11 @@ import java.util.Scanner;
 public class Controller {
     private final Model model;
     private final View view;
-    private final Scanner input;
+    private final Scanner input = new Scanner(System.in);
 
-    public Controller(Model model, View view, Scanner input) {
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-        this.input = input;
     }
 
     public boolean playTurn() {

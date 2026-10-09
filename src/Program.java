@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Program implements Runnable {
     private final Model model;
     private final View view;
@@ -7,18 +5,18 @@ public class Program implements Runnable {
 
     public Program() {
         model = new Model();
-        view = new ConsoleView(System.out);
-        controller = new Controller(model, view, new Scanner(System.in));
+        view = new ConsoleView(model);
+        controller = new Controller(model, view);
     }
 
     @Override
     public void run() {
-        view.showBoard(model);
+        view.showBoard();
         while (!model.isGameOver()) {
             if (!controller.playTurn()) {
                 return;
             }
-            view.showBoard(model);
+            view.showBoard();
         }
 
         if (model.getWinner() != ' ') {

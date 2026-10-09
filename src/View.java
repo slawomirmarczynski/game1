@@ -1,5 +1,11 @@
 public abstract class View {
-    public abstract void showBoard(Model model);
+    protected final Model model;
+
+    protected View(Model model) {
+        this.model = model;
+    }
+
+    public abstract void showBoard();
 
     public abstract void promptForMove(char player);
 

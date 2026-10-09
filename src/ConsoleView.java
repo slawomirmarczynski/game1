@@ -1,55 +1,51 @@
-import java.io.PrintStream;
-
 public class ConsoleView extends View {
-    private final PrintStream output;
-
-    public ConsoleView(PrintStream output) {
-        this.output = output;
+    public ConsoleView(Model model) {
+        super(model);
     }
 
     @Override
-    public void showBoard(Model model) {
-        output.println();
-        output.println("   A   B   C");
+    public void showBoard() {
+        System.out.println();
+        System.out.println("   A   B   C");
         for (int row = 0; row < 3; row++) {
-            output.print(row + 1);
-            output.print("  ");
+            System.out.print(row + 1);
+            System.out.print("  ");
             for (int column = 0; column < 3; column++) {
-                output.print(model.getCell(row, column));
+                System.out.print(model.getCell(row, column));
                 if (column < 2) {
-                    output.print(" | ");
+                    System.out.print(" | ");
                 }
             }
-            output.println();
+            System.out.println();
             if (row < 2) {
-                output.println("  ---+---+---");
+                System.out.println("  ---+---+---");
             }
         }
-        output.println();
+        System.out.println();
     }
 
     @Override
     public void promptForMove(char player) {
-        output.print("Ruch gracza " + player + " (np. A1): ");
+        System.out.print("Ruch gracza " + player + " (np. A1): ");
     }
 
     @Override
     public void showInvalidCoordinate() {
-        output.println("Nieprawidłowe pole. Podaj kolumnę A-C i wiersz 1-3, np. A1.");
+        System.out.println("Nieprawidłowe pole. Podaj kolumnę A-C i wiersz 1-3, np. A1.");
     }
 
     @Override
     public void showOccupiedCell() {
-        output.println("To pole jest juz zajęte. Wybierz inne.");
+        System.out.println("To pole jest juz zajęte. Wybierz inne.");
     }
 
     @Override
     public void showWinner(char player) {
-        output.println("Wygrywa gracz " + player + "!");
+        System.out.println("Wygrywa gracz " + player + "!");
     }
 
     @Override
     public void showDraw() {
-        output.println("Remis!");
+        System.out.println("Remis!");
     }
 }
