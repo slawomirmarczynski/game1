@@ -4,7 +4,7 @@ public class Program implements Runnable {
     private final Controller controller;
 
     public Program() {
-        model = new Model();
+        model = new Model(3);
         view = new ConsoleView(model);
         controller = new Controller(model, view);
     }

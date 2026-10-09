@@ -33,16 +33,38 @@ public class Controller {
 
     private int[] parseCoordinate(String coordinate) {
         String normalized = coordinate.trim().toUpperCase();
-        if (normalized.length() != 2) {
+        int rowStart = 0;
+        while (rowStart < normalized.length()
+                && normalized.charAt(rowStart) >= 'A' && normalized.charAt(rowStart) <= 'Z') {
+            rowStart++;
+        }
+        if (rowStart == 0 || rowStart == normalized.length()) {
             return null;
         }
 
-        char column = normalized.charAt(0);
-        char row = normalized.charAt(1);
-        if (column < 'A' || column > 'C' || row < '1' || row > '3') {
+        long column = 0;
+        for (int index = 0; index < rowStart; index++) {
+            column = column * 26 + normalized.charAt(index) - 'A' + 1;
+            if (column > model.getBoardSize()) {
+                return null;
+            }
+        }
+
+        long row = 0;
+        for (int index = rowStart; index < normalized.length(); index++) {
+            char digit = normalized.charAt(index);
+            if (digit < '0' || digit > '9') {
+                return null;
+            }
+            row = row * 10 + digit - '0';
+            if (row > model.getBoardSize()) {
+                return null;
+            }
+        }
+        if (row == 0) {
             return null;
         }
 
-        return new int[]{row - '1', column - 'A'};
+        return new int[]{(int) row - 1, (int) column - 1};
     }
 }

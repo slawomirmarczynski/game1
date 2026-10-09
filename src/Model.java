@@ -1,17 +1,24 @@
 public class Model {
-    private static final int BOARD_SIZE = 3;
-
-    private final char[][] board = new char[BOARD_SIZE][BOARD_SIZE];
+    private final char[][] board;
     private char currentPlayer = 'X';
     private char winner = ' ';
-    private int movesPlayed = 0;
+    private long movesPlayed = 0;
 
-    public Model() {
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int column = 0; column < BOARD_SIZE; column++) {
+    public Model(int boardSize) {
+        if (boardSize <= 0) {
+            throw new IllegalArgumentException("Board size must be positive.");
+        }
+
+        board = new char[boardSize][boardSize];
+        for (int row = 0; row < boardSize; row++) {
+            for (int column = 0; column < boardSize; column++) {
                 board[row][column] = ' ';
             }
         }
+    }
+
+    public int getBoardSize() {
+        return board.length;
     }
 
     public char getCell(int row, int column) {
@@ -27,7 +34,7 @@ public class Model {
     }
 
     public boolean isDraw() {
-        return winner == ' ' && (movesPlayed == BOARD_SIZE * BOARD_SIZE);
+        return winner == ' ' && movesPlayed == (long) board.length * board.length;
     }
 
     public boolean isGameOver() {
@@ -39,7 +46,7 @@ public class Model {
     }
 
     public boolean makeMove(int row, int column) {
-        if (row < 0 || row >= BOARD_SIZE || column < 0 || column >= BOARD_SIZE
+        if (row < 0 || row >= board.length || column < 0 || column >= board.length
                 || isGameOver() || !isCellEmpty(row, column)) {
             return false;
         }
@@ -57,19 +64,22 @@ public class Model {
     }
 
     private boolean hasWon(int row, int column) {
-        return board[row][0] == currentPlayer
-                && board[row][1] == currentPlayer
-                && board[row][2] == currentPlayer
-                || board[0][column] == currentPlayer
-                && board[1][column] == currentPlayer
-                && board[2][column] == currentPlayer
-                || row == column
-                && board[0][0] == currentPlayer
-                && board[1][1] == currentPlayer
-                && board[2][2] == currentPlayer
-                || row + column == BOARD_SIZE - 1
-                && board[0][2] == currentPlayer
-                && board[1][1] == currentPlayer
-                && board[2][0] == currentPlayer;
+        boolean completeRow = true;
+        boolean completeColumn = true;
+        boolean completeDiagonal = row == column;
+        boolean completeAntiDiagonal = row + column == board.length - 1;
+
+        for (int index = 0; index < board.length; index++) {
+            completeRow &= board[row][index] == currentPlayer;
+            completeColumn &= board[index][column] == currentPlayer;
+            if (completeDiagonal) {
+                completeDiagonal &= board[index][index] == currentPlayer;
+            }
+            if (completeAntiDiagonal) {
+                completeAntiDiagonal &= board[index][board.length - 1 - index] == currentPlayer;
+            }
+        }
+
+        return completeRow || completeColumn || completeDiagonal || completeAntiDiagonal;
     }
 }
