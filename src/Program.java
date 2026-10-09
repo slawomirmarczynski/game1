@@ -1,17 +1,18 @@
+/** Punkt wejścia i główna pętla rozgrywki. */
 public class Program implements Runnable {
-    private final Model model;
-    private final View view;
-    private final Controller controller;
-
-    public Program() {
-        model = new Model(3);
-        view = new ConsoleView(model);
-        controller = new Controller(model, view);
-    }
-
+    /**
+     * Tworzy model, widok i kontroler lokalnie oraz prowadzi grę do jej zakończenia.
+     * Lokalny czas życia tych obiektów ogranicza ich stan do pojedynczego uruchomienia.
+     */
     @Override
     public void run() {
+        final int boardSize = 6;
+        Model model = new Model(boardSize);
+        View view = new ConsoleView(model);
+        Controller controller = new Controller(model, view);
+
         view.showBoard();
+
         while (!model.isGameOver()) {
             if (!controller.playTurn()) {
                 return;
@@ -19,15 +20,15 @@ public class Program implements Runnable {
             view.showBoard();
         }
 
-        if (model.getWinner() != ' ') {
-            view.showWinner(model.getWinner());
-        } else {
+        if (model.isDraw()) {
             view.showDraw();
+        } else {
+            view.showWinner(model.getWinner());
         }
     }
 
+    /** Uruchamia program konsolowy. */
     public static void main(String[] args) {
-        Runnable program = new Program();
-        program.run();
+        new Program().run();
     }
 }
